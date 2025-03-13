@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<style>
+    body {
+        background-color: white;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 100%;
+        height: 900px;
+        background-image: url("/image/weatherbackground.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .logo {
+        width: 100%;
+        height: 220px;
+    }
+    .left {
+        width: 35%;
+        height: 220px;
+        float: left;
+    }
+    .right {
+        width: 65%;
+        height: 220px;
+        float: left;
+    }
+    
+    h1 {
+        color: rgb(55, 103, 118);
+        font-size: 50px;
+        font-weight: bold;
+        margin-top: 35px;
+        margin-left: 70px;
+    }
+
+    #city {
+        /*  input field*/
+        width: 470px;
+        height: 35px;
+        background: linear-gradient(90deg, rgba(163, 173, 172, 0.982) 2%, rgb(165, 186, 190) 90%);
+        color: black;
+        border-radius: 14px;
+        padding-left: 30px;
+    }
+
+    button {
+        width: 155px;
+        height: 35px;
+        background: linear-gradient(90deg, rgba(163, 173, 172, 0.982) 2%, rgb(165, 186, 190) 90%);
+        border-radius: 14px;
+        font-size: 20px;
+
+    }
+
+    .btn {
+        padding-top: 110px;
+    }
+    #data {
+        width: 730px;
+        height: 400px;
+        margin-left: 485px;
+        border-radius: 20px;
+        font-size: 23px;
+        font-weight: bold;
+        line-height: 45px;
+        text-align: center;
+        color: white;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="left">
+                <h1>Weatheraid</h1>
+                
+            </div>
+            <div class="right">
+                <div class="btn">
+                    <input type="text" id="city" placeholder="Enter your city name">
+                    <button onclick="wheather()" id="btn1">Submit</button>
+                </div>
+            </div>
+        </div>
+
+            <div id="data">
+            </div>
+        
+    </div>
+
+</body>
+<script>
+    function wheather() {
+        var city = document.getElementById("city").value
+        var apiKey = "e58a7e809e1138620afe543ec41e6d63";
+        var url = `https://api.openweathermap.org/data/2.5/weather?q=${city},IN&appid=${apiKey}`;
+        var p = fetch(url)
+            .then((r) => r.json())
+            .then((d) => {
+                    if (city !== "") {
+                    document.getElementById('data').value=""
+                    var tempe = d.main.temp - 273.15
+                    const tem = Math.round(tempe * 100) / 100;
+                    const pres = d.main.pressure
+                    const name = d.name
+                    const humi = d.main.humidity
+                    const wind = d.wind.speed
+                    const newdiv = document.createElement('div')
+                    newdiv.innerHTML = "<b>Name of city:</b>" + name +"<br><b>Temperature:</b<br>" + tem + "°C<br><b>Pressure:</b>" + pres +  "<br><b>Humidity:</b>" + humi + "<br><b>Wind Speed:</b>" + wind;
+                    document.getElementById('data').appendChild(newdiv)
+                    console.log(d)
+                    document.getElementById("city").value=""
+                
+                    }
+                    document.getElementById("btn1").addEventListener("click",function(){
+                        document.getElementById('data').innerHTML=""
+                    })
+
+            })
+    }
+</script>
+
+</html>
